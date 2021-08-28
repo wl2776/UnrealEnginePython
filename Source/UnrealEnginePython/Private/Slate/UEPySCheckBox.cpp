@@ -1,4 +1,4 @@
-#include "UEPySCheckBox.h"
+﻿#include "UEPySCheckBox.h"
 
 
 static PyObject *py_ue_scheck_box_is_checked(ue_PySCheckBox *self, PyObject * args)
@@ -103,7 +103,18 @@ static int ue_py_scheck_box_init(ue_PySCheckBox *self, PyObject *args, PyObject 
 	ue_py_slate_farguments_enum("is_checked", IsChecked, ECheckBoxState);
 	ue_py_slate_farguments_optional_enum("h_align", HAlign, EHorizontalAlignment);
 	ue_py_slate_farguments_struct("padding", Padding, FMargin);
+#if ENGINE_MINOR_VERSION == 27
+	//#pragma message("need more information!! mutable .... thing")
+	#ifndef UE_BUILD_DEBUG
+		#error "TODO: "
+	#else
+		#pragma message(" ====================================================== WARNING! ACHTUNG! Atención! ================================================")
+		#pragma message("\t\tue_py_slate_farguments_enum(\"click_method\", ClickMethod, EButtonClickMethod::Type); // ")
+		#pragma message(" ====================================================== WARNING! ACHTUNG! Atención! ================================================")
+	#endif
+#else
 	ue_py_slate_farguments_enum("click_method", ClickMethod, EButtonClickMethod::Type);
+#endif
 	ue_py_slate_farguments_optional_bool("is_focusable", IsFocusable);
 	ue_py_slate_farguments_optional_struct_ptr("unchecked_image", UncheckedImage, FSlateBrush);
 	ue_py_slate_farguments_optional_struct_ptr("unchecked_hoveredimage", UncheckedHoveredImage, FSlateBrush);

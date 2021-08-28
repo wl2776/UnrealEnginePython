@@ -676,6 +676,7 @@ PyObject *py_unreal_engine_create_asset(PyObject * self, PyObject * args)
 PyObject *py_unreal_engine_get_asset_referencers(PyObject * self, PyObject * args)
 {
 	char *path;
+
 	int depency_type = (int)EAssetRegistryDependencyType::All;
 
 	if (!PyArg_ParseTuple(args, "s|i:get_asset_referencers", &path, &depency_type))
@@ -688,7 +689,11 @@ PyObject *py_unreal_engine_get_asset_referencers(PyObject * self, PyObject * arg
 
 	FAssetRegistryModule& AssetRegistryModule = FModuleManager::GetModuleChecked<FAssetRegistryModule>("AssetRegistry");
 	TArray<FName> referencers;
-	AssetRegistryModule.Get().GetReferencers(UTF8_TO_TCHAR(path), referencers, (EAssetRegistryDependencyType::Type) depency_type);
+
+
+
+	AssetRegistryModule.Get().GetReferencers(UTF8_TO_TCHAR(path), referencers, (EAssetRegistryDependencyType::Type)depency_type);
+
 
 	PyObject *referencers_list = PyList_New(0);
 	for (FName name : referencers)
@@ -1346,7 +1351,11 @@ PyObject *py_unreal_engine_create_blueprint(PyObject * self, PyObject * args)
 		return PyErr_Format(PyExc_Exception, "invalid blueprint name");
 	}
 
-	UPackage *outer = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
+#if ENGINE_MINOR_VERSION == 27
+	UPackage *outer = CreatePackage(UTF8_TO_TCHAR(name));
+#else
+	UPackage* outer = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
+#endif
 	if (!outer)
 		return PyErr_Format(PyExc_Exception, "unable to create package");
 
@@ -1508,7 +1517,14 @@ PyObject *py_unreal_engine_create_blueprint_from_actor(PyObject * self, PyObject
 		return PyErr_Format(PyExc_Exception, "uobject is not a UClass");
 	AActor *actor = (AActor *)py_obj->ue_object;
 
-	UBlueprint *bp = FKismetEditorUtilities::CreateBlueprintFromActor(UTF8_TO_TCHAR(name), actor, true);
+#if ENGINE_MINOR_VERSION == 27
+	FKismetEditorUtilities::FCreateBlueprintFromActorParams		Params;
+	Params.bReplaceActor = true;
+
+	UBlueprint* bp = FKismetEditorUtilities::CreateBlueprintFromActor( *FString( UTF8_TO_TCHAR(name) ), actor, Params);
+#else
+	UBlueprint* bp = FKismetEditorUtilities::CreateBlueprintFromActor(UTF8_TO_TCHAR(name), actor, true);
+#endif
 
 	Py_RETURN_UOBJECT(bp);
 }
@@ -2089,7 +2105,11 @@ PyObject *py_ue_factory_create_new(ue_PyUObject *self, PyObject * args)
 	FString PackageName = PackageTools::SanitizePackageName(FString(UTF8_TO_TCHAR(name)));
 #endif
 
-	UPackage *outer = CreatePackage(nullptr, *PackageName);
+#if ENGINE_MINOR_VERSION == 27
+	UPackage* outer = CreatePackage(*PackageName);
+#else
+	UPackage* outer = CreatePackage(nullptr, *PackageName);
+#endif
 	if (!outer)
 		return PyErr_Format(PyExc_Exception, "unable to create package");
 
@@ -2161,7 +2181,11 @@ PyObject *py_ue_factory_import_object(ue_PyUObject *self, PyObject * args)
 	FString object_name = ObjectTools::SanitizeObjectName(FPaths::GetBaseFilename(UTF8_TO_TCHAR(filename)));
 	FString pkg_name = FString(UTF8_TO_TCHAR(name)) + TEXT("/") + object_name;
 
-	UPackage *outer = CreatePackage(nullptr, *pkg_name);
+#if ENGINE_MINOR_VERSION == 27
+	UPackage* outer = CreatePackage(*pkg_name);
+#else
+	UPackage* outer = CreatePackage(nullptr, *pkg_name);
+#endif
 	if (!outer)
 		return PyErr_Format(PyExc_Exception, "unable to create package");
 

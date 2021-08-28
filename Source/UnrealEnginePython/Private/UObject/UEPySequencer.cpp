@@ -1,4 +1,4 @@
-#include "UEPySequencer.h"
+﻿#include "UEPySequencer.h"
 
 #include "Runtime/MovieScene/Public/MovieScene.h"
 #include "Runtime/MovieScene/Public/MovieScenePossessable.h"
@@ -601,7 +601,11 @@ PyObject *py_ue_sequencer_add_camera(ue_PyUObject *self, PyObject * args)
 			// Lock the viewport to this camera
 			if (NewCamera && NewCamera->GetLevel())
 			{
+#if ENGINE_MINOR_VERSION == 27
+				GCurrentLevelEditingViewportClient->SetCinematicActorLock(nullptr);
+#else
 				GCurrentLevelEditingViewportClient->SetMatineeActorLock(nullptr);
+#endif
 				GCurrentLevelEditingViewportClient->SetActorLock(NewCamera);
 				GCurrentLevelEditingViewportClient->bLockedCameraView = true;
 				GCurrentLevelEditingViewportClient->UpdateViewForLockedActor();
@@ -611,7 +615,18 @@ PyObject *py_ue_sequencer_add_camera(ue_PyUObject *self, PyObject * args)
 			UMovieSceneSequence* Sequence = sequencer->GetFocusedMovieSceneSequence();
 			UMovieScene* OwnerMovieScene = Sequence->GetMovieScene();
 
+#if ENGINE_MINOR_VERSION == 27
+	#ifndef UE_BUILD_DEBUG
+		#error "don't compile it for production'"
+	#else
+		//MovieSceneToolHelpers::CameraAdded(OwnerMovieScene, CameraGuid, sequencer->GetLocalTime().Time.FloorToFrame());
+		#pragma message(" ====================================================== WARNING! ACHTUNG! Atención! ================================================")
+		#pragma message("\t\tMovieSceneToolHelpers::CameraAdded(OwnerMovieScene, CameraGuid, sequencer->GetLocalTime().Time.FloorToFrame());")
+		#pragma message(" ====================================================== WARNING! ACHTUNG! Atención! ================================================")
+	#endif
+#else
 			MovieSceneToolHelpers::CameraAdded(OwnerMovieScene, CameraGuid, sequencer->GetLocalTime().Time.FloorToFrame());
+#endif
 
 		}
 #else

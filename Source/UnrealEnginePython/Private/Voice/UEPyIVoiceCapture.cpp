@@ -131,7 +131,16 @@ static PyTypeObject ue_PyIVoiceCaptureType = {
 static int py_ue_ivoice_capture_init(ue_PyIVoiceCapture *self, PyObject * args)
 {
 
+#if ENGINE_MINOR_VERSION == 27
+	#ifdef UE_BUILD_DEBUG
+		TSharedPtr<IVoiceCapture> voice_capture_ptr = FVoiceModule::Get().CreateVoiceCapture("", 44100, 16);
+	#else
+		#error "At first change this record"
+	#endif
+#else
 	TSharedPtr<IVoiceCapture> voice_capture_ptr = FVoiceModule::Get().CreateVoiceCapture();
+#endif
+
 	if (!voice_capture_ptr.IsValid())
 	{
 		PyErr_SetString(PyExc_Exception, "unable to create a new VoiceCapture");

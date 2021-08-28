@@ -2784,7 +2784,11 @@ PyObject *py_ue_save_package(ue_PyUObject * self, PyObject * args)
 			}
 		}
 		// create a new package if it does not exist
+#if ENGINE_MINOR_VERSION == 27
+		package = CreatePackage(UTF8_TO_TCHAR(name));
+#else
 		package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
+#endif
 		if (!package)
 			return PyErr_Format(PyExc_Exception, "unable to create package");
 

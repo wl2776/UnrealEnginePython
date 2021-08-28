@@ -122,8 +122,13 @@ static PyObject *py_ue_fassetdata_get_tags_and_values(ue_PyFAssetData *self, voi
 	for (auto It = self->asset_data.TagsAndValues.CreateConstIterator(); It; ++It)
 	{
 		PyDict_SetItem(ret,
+#if ENGINE_MINOR_VERSION == 27
+			PyUnicode_FromString(TCHAR_TO_UTF8(*It.Key().ToString()		)),
+			PyUnicode_FromString(TCHAR_TO_UTF8(*It.Value().AsString()	)));
+#else
 			PyUnicode_FromString(TCHAR_TO_UTF8(*It->Key.ToString())),
 			PyUnicode_FromString(TCHAR_TO_UTF8(*It->Value)));
+#endif
 	}
 	return ret;
 }
