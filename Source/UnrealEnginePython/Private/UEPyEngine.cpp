@@ -1057,7 +1057,7 @@ PyObject *py_unreal_engine_create_package(PyObject *self, PyObject * args)
 	{
 		return PyErr_Format(PyExc_Exception, "package %s already exists", TCHAR_TO_UTF8(*u_package->GetPathName()));
 	}
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 	u_package = CreatePackage(UTF8_TO_TCHAR(name));
 #else
 	u_package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
@@ -1086,7 +1086,7 @@ PyObject *py_unreal_engine_get_or_create_package(PyObject *self, PyObject * args
 	// create a new package if it does not exist
 	if (!u_package)
 	{
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 		u_package = CreatePackage(UTF8_TO_TCHAR(name));
 #else
 		u_package = CreatePackage(nullptr, UTF8_TO_TCHAR(name));

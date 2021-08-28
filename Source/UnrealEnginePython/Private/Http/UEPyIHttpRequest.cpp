@@ -309,6 +309,8 @@ static int ue_py_ihttp_request_init(ue_PyIHttpRequest *self, PyObject *args, PyO
 	}
 #if ENGINE_MINOR_VERSION == 27
 	new(&self->http_request) TSharedRef<IHttpRequest, ESPMode::ThreadSafe>(FHttpModule::Get().CreateRequest());
+#elif ENGINE_MINOR_VERSION == 26
+	new(&self->http_request) TSharedRef<IHttpRequest, ESPMode::ThreadSafe>(FHttpModule::Get().CreateRequest());
 #else
 	new(&self->http_request) TSharedRef<IHttpRequest>(FHttpModule::Get().CreateRequest());
 #endif

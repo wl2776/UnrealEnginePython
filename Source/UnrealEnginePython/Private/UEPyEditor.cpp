@@ -1351,7 +1351,7 @@ PyObject *py_unreal_engine_create_blueprint(PyObject * self, PyObject * args)
 		return PyErr_Format(PyExc_Exception, "invalid blueprint name");
 	}
 
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 	UPackage *outer = CreatePackage(UTF8_TO_TCHAR(name));
 #else
 	UPackage* outer = CreatePackage(nullptr, UTF8_TO_TCHAR(name));
@@ -1517,7 +1517,7 @@ PyObject *py_unreal_engine_create_blueprint_from_actor(PyObject * self, PyObject
 		return PyErr_Format(PyExc_Exception, "uobject is not a UClass");
 	AActor *actor = (AActor *)py_obj->ue_object;
 
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 	FKismetEditorUtilities::FCreateBlueprintFromActorParams		Params;
 	Params.bReplaceActor = true;
 
@@ -2105,7 +2105,7 @@ PyObject *py_ue_factory_create_new(ue_PyUObject *self, PyObject * args)
 	FString PackageName = PackageTools::SanitizePackageName(FString(UTF8_TO_TCHAR(name)));
 #endif
 
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 	UPackage* outer = CreatePackage(*PackageName);
 #else
 	UPackage* outer = CreatePackage(nullptr, *PackageName);
@@ -2181,7 +2181,7 @@ PyObject *py_ue_factory_import_object(ue_PyUObject *self, PyObject * args)
 	FString object_name = ObjectTools::SanitizeObjectName(FPaths::GetBaseFilename(UTF8_TO_TCHAR(filename)));
 	FString pkg_name = FString(UTF8_TO_TCHAR(name)) + TEXT("/") + object_name;
 
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 	UPackage* outer = CreatePackage(*pkg_name);
 #else
 	UPackage* outer = CreatePackage(nullptr, *pkg_name);

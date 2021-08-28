@@ -1093,6 +1093,8 @@ PyObject *py_ue_skeletal_mesh_build_lod(ue_PyUObject *self, PyObject * args, PyO
 
 #if ENGINE_MINOR_VERSION == 27
 	bool success = MeshUtilities.BuildSkeletalMesh(lod_model, mesh->GetName(), mesh->GetRefSkeleton(), influences, wedges, faces, points, points_to_map, build_settings);
+#elif ENGINE_MINOR_VERSION == 26
+	bool success = MeshUtilities.BuildSkeletalMesh(lod_model, mesh->GetName(), mesh->RefSkeleton, influences, wedges, faces, points, points_to_map, build_settings);
 #else
 	bool success = MeshUtilities.BuildSkeletalMesh(lod_model, mesh->RefSkeleton, influences, wedges, faces, points, points_to_map, build_settings);
 #endif

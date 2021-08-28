@@ -137,6 +137,12 @@ static int py_ue_ivoice_capture_init(ue_PyIVoiceCapture *self, PyObject * args)
 	#else
 		#error "At first change this record"
 	#endif
+#elif ENGINE_MINOR_VERSION == 26
+	#ifdef UE_BUILD_DEBUG
+		TSharedPtr<IVoiceCapture> voice_capture_ptr = FVoiceModule::Get().CreateVoiceCapture("", 44100, 16);
+	#else
+		#error "At first change this record"
+	#endif
 #else
 	TSharedPtr<IVoiceCapture> voice_capture_ptr = FVoiceModule::Get().CreateVoiceCapture();
 #endif

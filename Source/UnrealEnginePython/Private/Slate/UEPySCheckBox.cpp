@@ -103,7 +103,7 @@ static int ue_py_scheck_box_init(ue_PySCheckBox *self, PyObject *args, PyObject 
 	ue_py_slate_farguments_enum("is_checked", IsChecked, ECheckBoxState);
 	ue_py_slate_farguments_optional_enum("h_align", HAlign, EHorizontalAlignment);
 	ue_py_slate_farguments_struct("padding", Padding, FMargin);
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 	//#pragma message("need more information!! mutable .... thing")
 	#ifndef UE_BUILD_DEBUG
 		#error "TODO: "

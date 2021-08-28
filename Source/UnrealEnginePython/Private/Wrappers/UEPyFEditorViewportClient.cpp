@@ -117,7 +117,7 @@ static PyObject *py_ue_feditor_viewport_client_set_realtime(ue_PyFEditorViewport
 		//Don't persist across editor sessions
 		FText OverrideSourceText;
 		OverrideSourceText.FromString(TEXT("UnrealEnginePython plugin script"));
-#if ENGINE_MINOR_VERSION == 27
+#if ENGINE_MINOR_VERSION == 27 || ENGINE_MINOR_VERSION == 26
 		self->editor_viewport_client->AddRealtimeOverride(PyObject_IsTrue(bInRealtime) ? true : false, OverrideSourceText);
 #else
 		self->editor_viewport_client->SetRealtimeOverride(PyObject_IsTrue(bInRealtime) ? true : false, OverrideSourceText);
