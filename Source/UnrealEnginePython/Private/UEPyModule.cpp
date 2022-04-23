@@ -50,7 +50,7 @@
 #if WITH_EDITOR
 #include "UEPyEditor.h"
 #include "Blueprint/UEPyEdGraph.h"
-#include "Fbx/UEPyFbx.h"
+// #include "Fbx/UEPyFbx.h"
 #include "Editor/BlueprintGraph/Classes/EdGraphSchema_K2.h"
 #include "Editor/BlueprintGraph/Public/BlueprintActionDatabase.h"
 #endif
@@ -2128,7 +2128,7 @@ void unreal_engine_init_py_module()
 	ue_python_init_edgraphpin(new_unreal_engine_module);
 	ue_python_init_fstring_asset_reference(new_unreal_engine_module);
 #if ENGINE_MINOR_VERSION > 12
-	ue_python_init_fbx(new_unreal_engine_module);
+	// ue_python_init_fbx(new_unreal_engine_module);
 #endif
 #if ENGINE_MINOR_VERSION > 13
 #if ENGINE_MINOR_VERSION > 21
