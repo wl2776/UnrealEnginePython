@@ -90,6 +90,8 @@ public:
 
 private:
 	PyObject * py_component_instance;
+	PyObject * py_component_module;
+	
 	// mapped uobject, required for debug and advanced reflection
 	ue_PyUObject *py_uobject;
 

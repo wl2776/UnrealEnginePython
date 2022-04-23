@@ -17,6 +17,7 @@ UPythonComponent::UPythonComponent()
 
 	bWantsInitializeComponent = true;
 
+	py_component_module = nullptr;
 	py_generator = nullptr;
 }
 
@@ -34,22 +35,27 @@ void UPythonComponent::InitializePythonComponent()
 		return;
 	}
 
-	PyObject *py_component_module = PyImport_ImportModule(TCHAR_TO_UTF8(*PythonModule));
-	if (!py_component_module)
+	if (py_component_module == nullptr)
 	{
-		unreal_engine_py_log_error();
-		return;
+		py_component_module = PyImport_ImportModule(TCHAR_TO_UTF8(*PythonModule));
+		if (!py_component_module)
+		{
+			unreal_engine_py_log_error();
+			return;
+		}
 	}
-
+	else
+	{
 #if WITH_EDITOR
-	// todo implement autoreload with a dictionary of module timestamps
-	py_component_module = PyImport_ReloadModule(py_component_module);
-	if (!py_component_module)
-	{
-		unreal_engine_py_log_error();
-		return;
-	}
+		// todo implement autoreload with a dictionary of module timestamps
+		py_component_module = PyImport_ReloadModule(py_component_module);
+		if (!py_component_module)
+		{
+			unreal_engine_py_log_error();
+			return;
+		}
 #endif
+	}
 
 	if (PythonClass.IsEmpty())
 		return;
