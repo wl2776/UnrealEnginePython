@@ -367,7 +367,7 @@ void FUnrealEnginePythonModule::StartupModule()
 		IniValue.ParseIntoArray(ImportModules, separators, 3);
 	}
 
-	FString ProjectScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("Scripts"));
+	FString ProjectScriptsPath = FPaths::Combine(*PROJECT_CONTENT_DIR, UTF8_TO_TCHAR("Python"));
 	if (!FPaths::DirectoryExists(ProjectScriptsPath))
 	{
 		FPlatformFileManager::Get().GetPlatformFile().CreateDirectory(*ProjectScriptsPath);
@@ -377,7 +377,7 @@ void FUnrealEnginePythonModule::StartupModule()
 #if WITH_EDITOR
 	for (TSharedRef<IPlugin>plugin : IPluginManager::Get().GetEnabledPlugins())
 	{
-		FString PluginScriptsPath = FPaths::Combine(plugin->GetContentDir(), UTF8_TO_TCHAR("Scripts"));
+		FString PluginScriptsPath = FPaths::Combine(plugin->GetContentDir(), UTF8_TO_TCHAR("Python"));
 		if (FPaths::DirectoryExists(PluginScriptsPath))
 		{
 			ScriptsPaths.Add(PluginScriptsPath);
