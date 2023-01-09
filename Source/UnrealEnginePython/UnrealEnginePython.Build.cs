@@ -22,7 +22,9 @@ public class UnrealEnginePython : ModuleRules
         "C:/Program Files/Python36",
         "C:/Program Files/Python35",
         "C:/Python27",
-        "C:/IntelPython35"
+        "C:/IntelPython35",
+        "c:/Python311",
+        "c:/Python38"
     };
 
     private string[] macKnownPaths =
@@ -447,7 +449,7 @@ public class UnrealEnginePython : ModuleRules
             System.Console.WriteLine("[WARNING] Ensure your python paths are set in GlobalConfig (DefaultEngine.ini) so the path can be corrected at runtime.");
         }
         // first try with python3
-        for (int i = 9; i >= 0; i--)
+        for (int i = 11; i >= 0; i--)
         {
             string fileName = string.Format("python3{0}.lib", i);
             string fullPath = Path.Combine(basePath, "libs", fileName);
